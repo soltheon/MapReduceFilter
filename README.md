@@ -1,66 +1,79 @@
-## Foundry
+# Map, Reduce, Filter Library
+This library provides three functions for manipulating arrays in Solidity: map(), reduce(), and filter().
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Map
+The map() function applies a given callback function to each element of an array and returns a new array with the results. 
 
-Foundry consists of:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+```solidity
+function square(uint256 x) pure returns (uint256) {
+    return x * x;
+}
 
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+uint256[] memory arr = [1, 2, 3, 4, 5];
+uint256[] memory squared = arr.map(square);
+// squared is now [1, 4, 9, 16, 25]
 ```
 
-### Test
+`supported types: uint256[]`
+
+## Reduce
+The reduce() function applies a given callback function to each element of an array, accumulating a single result.
+
+```solidity
+function sum(uint256 a, uint256 b) pure returns (uint256) {
+    return a + b;
+}
+
+uint256[] memory arr = [1, 2, 3, 4, 5];
+uint256 total = arr.reduce(sum);
+// total is now 15
+```
+`supported types: uint256[]`
+
+## Filter
+The filter() function applies a given callback function to each element of an array and returns a new array containing only the elements for which the callback returns true.
+```solidity
+function isEven(uint256 x) pure returns (bool) {
+    return x % 2 == 0;
+}
+
+uint256[] memory arr = [1, 2, 3, 4, 5];
+uint256[] memory even = arr.filter(isEven);
+// even is now [2, 4]
+```
+
+The filter() function also works with arrays of address types.
+
+```solidity
+function isContract(address a) view returns (bool) {
+    return a.code.length > 0;
+}
+
+
+address[] memory addresses = [address(this), address(0x123), address(0x456)];
+address[] memory contractAddresses = addresses.filter(isContract);
+// only the contracts remain in the list
+```
+`supported types: uint256[], address[]`
+
+
+## Test
 
 ```shell
 $ forge test
 ```
 
-### Format
+## Security
 
-```shell
-$ forge fmt
-```
+The code is tested but not audited. Use it at your own risk.
 
-### Gas Snapshots
+## Contributing
 
-```shell
-$ forge snapshot
-```
+Contributions to the library are welcome. Please submit pull requests if you want to add more uint sizes or any other desired types.
 
-### Anvil
+## License
 
-```shell
-$ anvil
-```
+This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later).
 
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+For more details visit [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.en.html).
