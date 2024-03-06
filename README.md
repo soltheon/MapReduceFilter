@@ -1,5 +1,16 @@
 # Map, Reduce, Filter Library
-This library provides three functions for manipulating arrays in Solidity: map(), reduce(), and filter().
+A useful library for working with arrays. I mostly use them for convenience when writing tests and keeping code readable. This library provides three functions for manipulating arrays in Solidity: map(), reduce(), and filter().
+
+```solidity
+import {Map, Reduce, Filter} from "soltheon/src/MapReduceFilter.sol";
+
+contract Example {
+    using Map for uint256[];
+    using Reduce for uint256[];
+    using Filter for uint256[];
+    using Filter for address[];
+}
+```
 
 ## Map
 The map() function applies a given callback function to each element of an array and returns a new array with the results. 
